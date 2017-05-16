@@ -1,6 +1,9 @@
 <?php
 
-class Car extends Product implements CarInterface
+namespace classes\product;
+use \classes\Product;
+
+class Car extends Product implements \CarInterface
 {
     protected $color = 'blue';
     protected $tankSize = 50;
@@ -9,7 +12,7 @@ class Car extends Product implements CarInterface
     public function setOilVolume($volume)
     {
         if ($volume > $this->tankSize) {
-           $this->oilVolume = $this->tankSize;
+            $this->oilVolume = $this->tankSize;
         }
         if ($volume < 0) {
             $this->oilVolume = 0;
@@ -21,7 +24,7 @@ class Car extends Product implements CarInterface
 
     public function isHasOil()
     {
-        if ($this->oilVolume/$this->tankSize < 0.1) {
+        if ($this->oilVolume / $this->tankSize < 0.1) {
             return false;
         }
         return true;

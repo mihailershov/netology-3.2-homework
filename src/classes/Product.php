@@ -1,6 +1,8 @@
 <?php
 
-abstract class Product implements ProductInterface
+namespace classes;
+
+abstract class Product extends \Exception implements \ProductInterface
 {
     protected $title;
     protected $price;
@@ -22,7 +24,7 @@ abstract class Product implements ProductInterface
     {
         $isFood = $this->type == 'food';
         $foodWeight = $this->weight;
-        if (($isFood && $foodWeight > 10) || (!$isFood)) return $this->price*0.1;
+        if (($isFood && $foodWeight > 10) || (!$isFood)) return $this->price * 0.1;
         return 0;
     }
 
@@ -42,19 +44,31 @@ abstract class Product implements ProductInterface
     // Универсальный геттер
     public function getProperty($property)
     {
-        return $this->$property;
+        try {
+            if (!property_exists($this, $property)) {
+                throw new \IsNotExistException('Property isn\'t exist');
+            }
+            if (empty($property)) {
+                throw new \UndefinedException('Property is not defined');
+            }
+            return $this->$property;
+        } catch (\IsNotExistException $e) {
+            echo 'Нет такого свойста (' . $e->getMessage() . ');';
+        } catch (\UndefinedException $e) {
+            echo 'Свойство не имеет значения (' . $e->getMessage() . ');';
+        }
+        return false;
     }
 
     // Универсальный сеттер
-    public function setProperty($property, $value) {
-        $this->$property = $value;
-    }
+    public function setProperty($property, $value)
+    {
+        if (!property_exists($this, $property)) {
+            return false;
+        }
 
-
-    // Универсальный сеттер с return'ом
-    public function setPropertyWithReturn($property, $value) {
         $this->$property = $value;
-        return $this;
+        return $value;
     }
 
 }

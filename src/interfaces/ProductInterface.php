@@ -7,5 +7,4 @@ interface ProductInterface
     public function totalPrice();
     public function getProperty($property);
     public function setProperty($property, $value);
-    public function setPropertyWithReturn($property, $value);
 }
