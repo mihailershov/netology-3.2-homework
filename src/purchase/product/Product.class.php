@@ -3,7 +3,7 @@
 namespace purchase\product;
 
 use purchase\product\interfaces\Product as ProductInterface;
-use app\exceptions\all as exception;
+use app\exceptions\all as exceptions;
 
 abstract class Product extends \Exception implements ProductInterface
 {
@@ -55,15 +55,15 @@ abstract class Product extends \Exception implements ProductInterface
         // Проба исключений (намеренное усложнение)
         try {
             if (!property_exists($this, $property)) {
-                throw new exception\IsNotExistException('Property isn\'t exist');
+                throw new exceptions\IsNotExistException('Property isn\'t exist');
             }
             if (empty($this->$property)) {
-                throw new exception\UndefinedException('Property is not defined');
+                throw new exceptions\UndefinedException('Property is not defined');
             }
             return $this->$property;
-        } catch (exception\IsNotExistException $e) {
+        } catch (exceptions\IsNotExistException $e) {
             echo 'Нет такого свойста (' . $e->getMessage() . ');<br>';
-        } catch (exception\UndefinedException $e) {
+        } catch (exceptions\UndefinedException $e) {
             echo 'Свойство не имеет значения (' . $e->getMessage() . ');<br>';
         }
         return false;
