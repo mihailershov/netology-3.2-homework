@@ -4,6 +4,7 @@ namespace purchase\product\interfaces;
 
 interface Product
 {
+    public function isFood();
     public function discount();
     public function deliveryPrice();
     public function totalPrice();

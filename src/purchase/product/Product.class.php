@@ -3,6 +3,7 @@
 namespace purchase\product;
 
 use purchase\product\interfaces\Product as ProductInterface;
+use app\exceptions\all as exception;
 
 abstract class Product extends \Exception implements ProductInterface
 {
@@ -10,7 +11,6 @@ abstract class Product extends \Exception implements ProductInterface
     protected $price;
     protected $type;
     protected $weight;
-
 
     // Создаем объект
     public function __construct($title, $price, $type, $weight)
@@ -21,10 +21,15 @@ abstract class Product extends \Exception implements ProductInterface
         $this->weight = $weight;
     }
 
+    public function isFood()
+    {
+        return $this->type == 'food';
+    }
+
     // Размер скидки
     public function discount()
     {
-        $isFood = $this->type == 'food';
+        $isFood = $this->isFood();
         $foodWeight = $this->weight;
         if (($isFood && $foodWeight > 10) || (!$isFood)) return $this->price * 0.1;
         return 0;
@@ -33,7 +38,8 @@ abstract class Product extends \Exception implements ProductInterface
     // Цена доставки
     public function deliveryPrice()
     {
-        if ($this->discount()) return 300;
+        $discount = $this->discount();
+        if ($discount > 0) return 300;
         return 250;
     }
 
@@ -48,15 +54,15 @@ abstract class Product extends \Exception implements ProductInterface
     {
         try {
             if (!property_exists($this, $property)) {
-                throw new \Exception('Property isn\'t exist');
+                throw new exception\IsNotExistException('Property isn\'t exist');
             }
-            if (empty($property)) {
-                throw new \Exception('Property is not defined');
+            if (empty($this->$property)) {
+                throw new exception\UndefinedException('Property is not defined');
             }
             return $this->$property;
-        } catch (\Exception $e) {
+        } catch (exception\IsNotExistException $e) {
             echo 'Нет такого свойста (' . $e->getMessage() . ');';
-        } catch (\Exception $e) {
+        } catch (exception\UndefinedException $e) {
             echo 'Свойство не имеет значения (' . $e->getMessage() . ');';
         }
         return false;
@@ -65,10 +71,6 @@ abstract class Product extends \Exception implements ProductInterface
     // Универсальный сеттер
     public function setProperty($property, $value)
     {
-        if (!property_exists($this, $property)) {
-            return false;
-        }
-
         $this->$property = $value;
         return $value;
     }
