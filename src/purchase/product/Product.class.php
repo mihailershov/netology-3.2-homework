@@ -27,7 +27,7 @@ abstract class Product extends \Exception implements ProductInterface
     }
 
     // Размер скидки
-    public function discount()
+    public function hasDiscount()
     {
         $isFood = $this->isFood();
         $foodWeight = $this->weight;
@@ -38,7 +38,7 @@ abstract class Product extends \Exception implements ProductInterface
     // Цена доставки
     public function deliveryPrice()
     {
-        $discount = $this->discount();
+        $discount = $this->hasDiscount();
         if ($discount > 0) return 300;
         return 250;
     }
@@ -46,12 +46,13 @@ abstract class Product extends \Exception implements ProductInterface
     // Цена с учетом цены доставки и скидки
     public function totalPrice()
     {
-        return $this->price - $this->discount() + $this->deliveryPrice();
+        return $this->price - $this->hasDiscount() + $this->deliveryPrice();
     }
 
     // Универсальный геттер
     public function getProperty($property)
     {
+        // Проба исключений (намеренное усложнение)
         try {
             if (!property_exists($this, $property)) {
                 throw new exception\IsNotExistException('Property isn\'t exist');
@@ -61,9 +62,9 @@ abstract class Product extends \Exception implements ProductInterface
             }
             return $this->$property;
         } catch (exception\IsNotExistException $e) {
-            echo 'Нет такого свойста (' . $e->getMessage() . ');';
+            echo 'Нет такого свойста (' . $e->getMessage() . ');<br>';
         } catch (exception\UndefinedException $e) {
-            echo 'Свойство не имеет значения (' . $e->getMessage() . ');';
+            echo 'Свойство не имеет значения (' . $e->getMessage() . ');<br>';
         }
         return false;
     }
@@ -71,6 +72,10 @@ abstract class Product extends \Exception implements ProductInterface
     // Универсальный сеттер
     public function setProperty($property, $value)
     {
+        if (!property_exists($this, $property)) {
+            return false;
+        }
+
         $this->$property = $value;
         return $value;
     }
