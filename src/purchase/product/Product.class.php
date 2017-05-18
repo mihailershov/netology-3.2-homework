@@ -1,8 +1,10 @@
 <?php
 
-namespace classes;
+namespace purchase\product;
 
-abstract class Product extends \Exception implements \ProductInterface
+use purchase\product\interfaces\Product as ProductInterface;
+
+abstract class Product extends \Exception implements ProductInterface
 {
     protected $title;
     protected $price;
@@ -46,15 +48,15 @@ abstract class Product extends \Exception implements \ProductInterface
     {
         try {
             if (!property_exists($this, $property)) {
-                throw new \IsNotExistException('Property isn\'t exist');
+                throw new \Exception('Property isn\'t exist');
             }
             if (empty($property)) {
-                throw new \UndefinedException('Property is not defined');
+                throw new \Exception('Property is not defined');
             }
             return $this->$property;
-        } catch (\IsNotExistException $e) {
+        } catch (\Exception $e) {
             echo 'Нет такого свойста (' . $e->getMessage() . ');';
-        } catch (\UndefinedException $e) {
+        } catch (\Exception $e) {
             echo 'Свойство не имеет значения (' . $e->getMessage() . ');';
         }
         return false;

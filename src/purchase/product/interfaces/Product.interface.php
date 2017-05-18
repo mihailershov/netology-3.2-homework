@@ -1,6 +1,8 @@
 <?php
 
-interface ProductInterface
+namespace purchase\product\interfaces;
+
+interface Product
 {
     public function discount();
     public function deliveryPrice();

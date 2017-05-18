@@ -1,9 +1,10 @@
 <?php
 
-namespace classes\product;
-use \classes\Product;
+namespace purchase\product\children;
 
-final class BagOfPotatoes extends Product
+use \purchase\product\Product;
+
+class BagOfPotatoes extends Product
 {
     protected $thePotatoWeight;
     protected $numberOfPotatoes;

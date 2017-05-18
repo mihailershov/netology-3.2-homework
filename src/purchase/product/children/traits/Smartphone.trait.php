@@ -1,6 +1,8 @@
 <?php
 
-trait SmartphoneTrait
+namespace purchase\product\children\traits;
+
+trait Smartphone
 {
     // кхм-кхм
     public function areYouRich()

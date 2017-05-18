@@ -1,9 +1,11 @@
 <?php
 
-namespace classes\product;
-use \classes\Product;
+namespace purchase\product\children;
 
-class Car extends Product implements \CarInterface
+use \purchase\product\Product;
+use \purchase\product\interfaces\Car as CarInterface;
+
+class Car extends Product implements CarInterface
 {
     protected $color = 'blue';
     protected $tankSize = 50;
