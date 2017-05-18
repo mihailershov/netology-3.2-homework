@@ -2,6 +2,7 @@
 
 interface ProductInterface
 {
+    public function isFood();
     public function discount();
     public function deliveryPrice();
     public function totalPrice();

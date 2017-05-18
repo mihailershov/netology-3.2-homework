@@ -20,16 +20,22 @@ abstract class Product implements ProductInterface
     // Размер скидки
     public function discount()
     {
-        $isFood = $this->type == 'food';
+        $isFood = $this->isFood();
         $foodWeight = $this->weight;
         if (($isFood && $foodWeight > 10) || (!$isFood)) return $this->price*0.1;
         return 0;
     }
 
+    public function isFood()
+    {
+        return $this->type == 'food';
+    }
+
     // Цена доставки
     public function deliveryPrice()
     {
-        if ($this->discount()) return 300;
+        $discount = $this->discount();
+        if ($discount > 0) return 300;
         return 250;
     }
 
