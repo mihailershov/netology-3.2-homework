@@ -5,7 +5,7 @@ namespace purchase\product;
 use purchase\product\interfaces\Product as ProductInterface;
 use app\exceptions\all as exceptions;
 
-abstract class Product extends \Exception implements ProductInterface
+abstract class Product implements ProductInterface
 {
     protected $title;
     protected $price;
@@ -58,7 +58,7 @@ abstract class Product extends \Exception implements ProductInterface
                 throw new exceptions\IsNotExistException('Property isn\'t exist');
             }
             if (empty($this->$property)) {
-                throw new exceptions\UndefinedException('Property is not defined');
+                throw new exceptions\UndefinedException('Property does not defined');
             }
             return $this->$property;
         } catch (exceptions\IsNotExistException $e) {

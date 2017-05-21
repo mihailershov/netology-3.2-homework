@@ -1,50 +1,52 @@
 <?php
 
 namespace purchase\shoppingCart;
+
+use purchase\product\Product;
 use app\exceptions\all\IsNotExistException;
 
 class ShoppingCart
 {
-    protected static $products = [];
+    protected $products = [];
 
-    public static function addToCart($product)
+    public function addToCart(Product $product)
     {
         try {
             if (!$product->getProperty('price')) {
                 throw new IsNotExistException('Product don\'t have a price');
             }
-            self::$products[$product->getProperty('title')] = $product;
+            $this->products[$product->getProperty('title')] = $product;
         } catch (IsNotExistException $e){
             echo 'Невозможно добавить в корзину (' . $e->getMessage() . ');<br>';
         }
     }
 
-    public static function getOrderPrice()
+    public function getOrderPrice()
     {
         $orderPrice = 0;
-        foreach (self::$products as $product) {
+        foreach ($this->products as $product) {
             $orderPrice = $orderPrice + $product->getProperty('price');
         }
         return $orderPrice;
     }
 
-    public static function searchProduct($product)
+    public function searchProduct(Product $product)
     {
-        $index = array_search($product, self::$products, true);
+        $index = array_search($product, $this->products, true);
         if (!$index && $index !== 0) {
             return false;
         }
         return $index;
     }
 
-    public static function removeProductFromShoppingCart($product)
+    public function removeProduct(Product $product)
     {
-        $index = self::searchProduct($product);
-        if ($index !== false) unset(self::$products[$index]);
+        $index = $this->searchProduct($product);
+        if ($index !== false) unset($this->products[$index]);
     }
 
-    public static function getProducts()
+    public function getProducts()
     {
-        return self::$products;
+        return $this->products;
     }
 }
